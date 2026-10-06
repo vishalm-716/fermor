@@ -147,3 +147,17 @@ src/
 - **One testimonial format.** Quotes are from early-access conversations rather than a trust
   badge wall; a real launch would replace them with named, permissioned members (and probably a
   changelog link for the "we update the maths" promise).
+
+---
+
+## Live deployment
+
+- **Production URL:** https://fermor-orcin.vercel.app
+- **Project:** vishal-shanmukham-ms-projects/fermor (Vercel)
+- **First deployment:** 2026-10-06
+
+The site was deployed with `vercel deploy --yes` (source deploy; Vercel builds
+server-side). The `vercel build` (local prebuilt) path fails on this Windows
+machine with `EPERM: operation not permitted, symlink '_global-error.rsc.func'`
+— an upstream Vercel CLI / Windows symlink issue, not a project problem. The
+source deploy sidesteps it entirely and produces an identical production build.
