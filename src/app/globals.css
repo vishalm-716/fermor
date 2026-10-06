@@ -1,0 +1,298 @@
+@import "tailwindcss";
+
+/* Entrance used when a calculator tab is swapped in. */
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [role="tabpanel"],
+  [class*="animate-ping"] {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  Fermor design tokens
+ *  Warm paper + deep ink + one confident jade accent.
+ *  Deliberately avoids the violet/blue gradient look of generic SaaS.
+ * ------------------------------------------------------------------ */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-display: var(--font-newsreader), ui-serif, Georgia, "Times New Roman",
+    serif;
+  --font-mono: var(--font-mono-jet), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+
+  /* Surfaces */
+  --color-paper: #f7f6f2;
+  --color-paper-2: #efeee7;
+  --color-paper-3: #e7e5db;
+
+  /* Warm neutrals (text on paper) */
+  --color-smoke-100: #f2f1ec;
+  --color-smoke-200: #e5e3da;
+  --color-smoke-300: #d2cfc3;
+  --color-smoke-400: #a9a598;
+  --color-smoke-500: #7c7869;
+  --color-smoke-600: #5b574a;
+  --color-smoke-700: #423f35;
+
+  /* Ink (dark surfaces + primary text) */
+  --color-ink-400: #33456a;
+  --color-ink-500: #22304d;
+  --color-ink-600: #16223a;
+  --color-ink-700: #0f1929;
+  --color-ink-800: #0b1424;
+  --color-ink-900: #080f1c;
+  --color-ink-950: #050a14;
+
+  /* Jade — growth, clarity, the one accent we allow to shout */
+  --color-jade-50: #e9f6f0;
+  --color-jade-100: #cbeade;
+  --color-jade-200: #9dd8c2;
+  --color-jade-300: #64c0a1;
+  --color-jade-400: #2fa47f;
+  --color-jade-500: #158a68;
+  --color-jade-600: #0d6e54;
+  --color-jade-700: #0a5541;
+  --color-jade-800: #073d2f;
+  --color-jade-900: #052b21;
+
+  /* Clay — used only for "careful"/neutral-chart marks */
+  --color-clay-300: #e6c79a;
+  --color-clay-400: #d6a563;
+  --color-clay-500: #bd8440;
+
+  --shadow-card: 0 1px 2px rgba(8, 15, 28, 0.04), 0 12px 28px -18px rgba(8, 15, 28, 0.28);
+  --shadow-lift: 0 2px 4px rgba(8, 15, 28, 0.05), 0 26px 50px -26px rgba(8, 15, 28, 0.32);
+  --shadow-panel: 0 1px 1px rgba(8, 15, 28, 0.04), 0 40px 70px -45px rgba(8, 15, 28, 0.55);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink-800);
+    font-feature-settings: "cv05" 1, "ss01" 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-jade-200);
+    color: var(--color-ink-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-jade-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Numbers line up like a ledger should. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Consistent page gutter + measure, used by every section. */
+  .shell {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .shell {
+      padding-inline: 2.75rem;
+    }
+  }
+
+  /* Hairline rule that reads like a printed financial report. */
+  .rule {
+    height: 1px;
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in oklab, var(--color-ink-800) 18%, transparent),
+      transparent
+    );
+  }
+
+  /* Fine graph-paper texture for section backdrops. */
+  .graph-paper {
+    background-image: linear-gradient(
+        to right,
+        color-mix(in oklab, var(--color-ink-800) 6%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--color-ink-800) 6%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 68px 68px;
+  }
+
+  .graph-paper-dark {
+    background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  /* Scroll reveal: transform + opacity only, so it stays cheap. */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 700ms cubic-bezier(0.22, 0.7, 0.2, 1),
+      transform 700ms cubic-bezier(0.22, 0.7, 0.2, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Underline that grows from the left on hover. */
+  .link-sweep {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 260ms cubic-bezier(0.22, 0.7, 0.2, 1);
+  }
+
+  .link-sweep:hover,
+  .link-sweep[data-active="true"] {
+    background-size: 100% 1px;
+  }
+
+  /* Slider: one custom style for every calculator in the page. */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 26px;
+    background: transparent;
+    cursor: grab;
+  }
+
+  .slider:active {
+    cursor: grabbing;
+  }
+
+  .slider::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-smoke-300);
+  }
+
+  .slider::-moz-range-track {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-smoke-300);
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -7px;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: var(--color-ink-800);
+    border: 3px solid var(--color-paper);
+    box-shadow: 0 1px 6px rgba(8, 15, 28, 0.35);
+    transition: transform 160ms ease, background-color 160ms ease;
+  }
+
+  .slider::-moz-range-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: var(--color-ink-800);
+    border: 3px solid var(--color-paper);
+    box-shadow: 0 1px 6px rgba(8, 15, 28, 0.35);
+  }
+
+  .slider:hover::-webkit-slider-thumb,
+  .slider:focus-visible::-webkit-slider-thumb {
+    transform: scale(1.12);
+    background: var(--color-jade-600);
+  }
+
+  .slider:hover::-moz-range-thumb,
+  .slider:focus-visible::-moz-range-thumb {
+    transform: scale(1.12);
+    background: var(--color-jade-600);
+  }
+
+  .slider-dark::-webkit-slider-runnable-track {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .slider-dark::-moz-range-track {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .slider-dark::-webkit-slider-thumb {
+    background: var(--color-jade-300);
+    border-color: var(--color-ink-800);
+  }
+
+  .slider-dark::-moz-range-thumb {
+    background: var(--color-jade-300);
+    border-color: var(--color-ink-800);
+  }
+
+  /* The dashed "+" tick marks used around the hero panel. */
+  .dotted-ring {
+    background-image: radial-gradient(
+      color-mix(in oklab, var(--color-ink-800) 22%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 8px 8px;
+  }
+}
