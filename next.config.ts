@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   output: "standalone",
+  trailingSlash: false,
   // Turbopack is only meaningful for `next dev`; keep it off in build to
   // avoid any Windows symlinking quirks in the Vercel build output.
   turbopack: {},

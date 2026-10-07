@@ -1,0 +1,18 @@
+{
+  "trailingSlash": false,
+  "functions": {
+    "src/app/api/waitlist/route.ts": {
+      "memory": 128,
+      "maxDuration": 10
+    },
+    "src/app/api/**/*.ts": {
+      "memory": 128,
+      "maxDuration": 10
+    }
+  },
+  "build": {
+    "environment": {
+      "NEXT_PRIVATE_TARGET": "serverless"
+    }
+  }
+}

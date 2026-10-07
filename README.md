@@ -142,7 +142,7 @@ src/
 - **Legal pages are labelled rather than faked.** Privacy and Terms exist in the footer as
   "ships with the app" instead of dead links to nowhere; Contact is a working `mailto:`.
 - **Only the homepage.** Nav and footer links resolve to on-page anchors or the waitlist, so
-  there are no broken routes. The `/calculators` pages, an FAQ and a pricing/“is it free”
+  there are no broken routes. The `/calculators` pages, an FAQ and a pricing/"is it free"
   clarification are the obvious next pages.
 - **One testimonial format.** Quotes are from early-access conversations rather than a trust
   badge wall; a real launch would replace them with named, permissioned members (and probably a
@@ -152,12 +152,18 @@ src/
 
 ## Live deployment
 
-- **Production URL:** https://fermor-orcin.vercel.app
-- **Project:** vishal-shanmukham-ms-projects/fermor (Vercel)
-- **First deployment:** 2026-10-06
+- **Production URL (this session's upgrade):** https://fermor-orcin.vercel.app
+- **Preview URL (latest source deploy):** https://fermor-52boizqa8-vishal-shanmukham-ms-projects.vercel.app
+- **Project ID:** prj_ScD2EXPo6OXebfrLlGqsxqD9efI8
+- **Deployed from:** commit d38a1ff, via `vercel deploy --yes` then `vercel --prod` (source deploy; Vercel builds server-side).
+- **Smoke on prod this session:** home 200 (~189 KB HTML), GET /api/waitlist → {"ok":true}, POST adds to the list, duplicate handled, unknown route → 404.
 
-The site was deployed with `vercel deploy --yes` (source deploy; Vercel builds
-server-side). The `vercel build` (local prebuilt) path fails on this Windows
-machine with `EPERM: operation not permitted, symlink '_global-error.rsc.func'`
-— an upstream Vercel CLI / Windows symlink issue, not a project problem. The
-source deploy sidesteps it entirely and produces an identical production build.
+### Deploying a fresh change
+
+```bash
+git push                              # if you have a remote configured
+npx vercel deploy --yes              # source deploy (Vercel builds server-side)
+npx vercel --prod                    # promote preview to production when ready
+```
+
+Local `vercel build` fails on this Windows machine with `EPERM: operation not permitted, symlink '_global-error.rsc.func'` — an upstream Vercel CLI / Windows symlink issue, not a project problem. The source deploy sidesteps it entirely and produces an identical production build.
