@@ -48,7 +48,7 @@ export function Trust() {
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-jade-600">
-                05 — Early users
+                08 — Early users
               </p>
               <h2 className="mt-4 font-display text-[2rem] leading-[1.1] tracking-[-0.015em] text-ink-800 sm:text-[2.5rem]">
                 Quiet confidence, in their words

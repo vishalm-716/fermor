@@ -296,3 +296,183 @@
     background-size: 8px 8px;
   }
 }
+
+/* ================================================================= *
+ *  Fermor — 3D / depth / scroll-motion extensions
+ *  Calm, premium, trustworthy. Nothing here should ever feel flashy.
+ *  Disabled automatically under prefers-reduced-motion and on small
+ *  screens where the 3D scene is offloaded to the flat clarity panel.
+ * ================================================================= */
+
+@layer components {
+  /* ---------- glassmorphism cards ---------- */
+  .glass {
+    background: color-mix(in oklab, var(--color-paper) 82%, transparent);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid color-mix(in oklab, var(--color-paper) 60%, transparent);
+  }
+
+  .glass-strong {
+    background: color-mix(in oklab, var(--color-paper) 88%, transparent);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid color-mix(in oklab, var(--color-ink-800) 9%, transparent);
+  }
+
+  /* layered shadows — read as depth, not decoration */
+  .shadow-glass {
+    box-shadow: 0 1px 1px color-mix(in oklab, var(--color-ink-800) 4%, transparent),
+                0 8px 24px -16px color-mix(in oklab, var(--color-ink-800) 30%, transparent),
+                inset 0 1px 0 color-mix(in oklab, var(--color-paper) 92%, transparent);
+  }
+
+  .shadow-glass-hover {
+    box-shadow: 0 1px 1px color-mix(in oklab, var(--color-ink-800) 4%, transparent),
+                0 18px 40px -22px color-mix(in oklab, var(--color-ink-800) 38%, transparent),
+                0 0 0 1px color-mix(in oklab, var(--color-jade-400) 22%, transparent),
+                inset 0 1px 0 color-mix(in oklab, var(--color-paper) 94%, transparent);
+  }
+
+  /* ---------- 3D-tilt card (mouse-position perspective) ---------- */
+  .tilt-card {
+    transform-style: preserve-3d;
+    transform: perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px);
+    will-change: transform;
+    transition: transform 40ms linear;
+  }
+
+  /* ---------- cursor-follow glow ---------- */
+  .glow {
+    transition: opacity 320ms ease, transform 240ms ease;
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+
+  /* ---------- glass divider for scroll sections ---------- */
+  .glass-divider {
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in oklab, var(--color-paper) 70%, transparent) 12%,
+      color-mix(in oklab, var(--color-paper) 70%, transparent) 88%,
+      transparent
+    );
+  }
+
+  /* ---------- GlassCard: perspective tilt + cursor glow ---------- */
+  .glass-card {
+    position: relative;
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg));
+    transition: transform 320ms cubic-bezier(0.22, 0.7, 0.2, 1),
+      box-shadow 320ms ease, border-color 320ms ease;
+    will-change: transform;
+  }
+
+  .glass-card:hover {
+    box-shadow: 0 2px 4px color-mix(in oklab, var(--color-ink-800) 5%, transparent),
+      0 28px 56px -28px color-mix(in oklab, var(--color-ink-800) 36%, transparent),
+      0 0 0 1px color-mix(in oklab, var(--color-jade-400) 24%, transparent);
+  }
+
+  .glass-card__glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      340px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+      var(--glow-color, rgba(47, 164, 127, 0.16)),
+      transparent 62%
+    );
+    opacity: var(--glow-opacity, 0);
+    transition: opacity 300ms ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Children sit above the glow layer. */
+  .glass-card > *:not(.glass-card__glow) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---------- Magnetic CTA ---------- */
+  .magnetic {
+    display: inline-block;
+    transition: transform 380ms cubic-bezier(0.22, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+
+  .magnetic:active {
+    transition-duration: 120ms;
+  }
+
+  /* ---------- Split-line heading reveal ---------- */
+  .split-line {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+
+  .split-line {
+    opacity: 0;
+    transform: translateY(0.7em);
+    transition: opacity 640ms cubic-bezier(0.22, 0.7, 0.2, 1),
+      transform 640ms cubic-bezier(0.22, 0.7, 0.2, 1);
+  }
+
+  [data-shown="true"] .split-line {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---------- Pinned story (How it works) ---------- */
+  .story-track {
+    position: relative;
+  }
+
+  .story-step {
+    transition: opacity 460ms cubic-bezier(0.22, 0.7, 0.2, 1),
+      transform 460ms cubic-bezier(0.22, 0.7, 0.2, 1);
+  }
+
+  .story-progress__bar {
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 220ms linear;
+  }
+
+  /* ---------- reduced-motion + small-screen: kill heavy motion ---------- */
+  @media (prefers-reduced-motion: reduce), (max-width: 639px) {
+    .tilt-card {
+      transform: none;
+      transition: none;
+    }
+    .glow {
+      display: none !important;
+    }
+    .glass-card {
+      transform: none !important;
+      transition: box-shadow 320ms ease, border-color 320ms ease;
+    }
+    .glass-card__glow {
+      display: none !important;
+    }
+    .magnetic {
+      transform: none !important;
+      transition: none;
+    }
+    .split-line {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .reveal[data-shown="true"] {
+      transform: none;
+    }
+  }
+}

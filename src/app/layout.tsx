@@ -67,8 +67,12 @@ export default function RootLayout({
         className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <noscript>
-          {/* Scroll reveals are progressive enhancement — never hide content. */}
-          <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
+          {/*
+            Scroll reveals and split headings are progressive enhancement —
+            never hide content. The pinned How-it-works story needs JS to
+            advance, so without it we fall back to the static step list.
+          */}
+          <style>{`.reveal{opacity:1 !important;transform:none !important}.split-line{opacity:1 !important;transform:none !important}.story-pinned{display:none !important}.story-static{display:block !important}`}</style>
         </noscript>
         {children}
       </body>

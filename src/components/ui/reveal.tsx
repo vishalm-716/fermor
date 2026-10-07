@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+
+/**
+ * Tags Reveal is allowed to render as. Kept as an explicit union (rather than
+ * React.ElementType) because React Three Fiber merges every THREE class into
+ * JSX.IntrinsicElements, which collapses a fully-generic ElementType down to
+ * `never` props under `strict`.
+ */
+type RevealTag = "div" | "li" | "section" | "article" | "span" | "ul";
 
 /**
  * Fades content up the first time it scrolls into view.
@@ -15,7 +23,7 @@ export function Reveal({
 }: {
   children: ReactNode;
   delay?: number;
-  as?: ElementType;
+  as?: RevealTag;
   className?: string;
 }) {
   const ref = useRef<HTMLElement | null>(null);

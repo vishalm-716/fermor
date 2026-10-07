@@ -54,7 +54,7 @@ export function Principles() {
         <Reveal>
           <div className="max-w-3xl">
             <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-jade-300">
-              04 — Why Fermor is different
+              06 — Why Fermor is different
             </p>
             <h2 className="mt-4 font-display text-[2rem] leading-[1.1] tracking-[-0.015em] text-white sm:text-[2.7rem]">
               The usual finance playbook — and the parts we skip.

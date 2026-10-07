@@ -213,6 +213,57 @@ export function IconScale(props: IconProps) {
   );
 }
 
+/** Rupee glyph set as text — recognisable, and honest about it. */
+export function IconRupee(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <rect
+        x="3.75"
+        y="3.75"
+        width="16.5"
+        height="16.5"
+        rx="4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <text
+        x="12"
+        y="16.1"
+        textAnchor="middle"
+        fontSize="11.5"
+        fontWeight="600"
+        fill="currentColor"
+        fontFamily="var(--font-mono-jet), ui-monospace, monospace"
+      >
+        ₹
+      </text>
+    </svg>
+  );
+}
+
+/** Phone-first: the layout most of India actually browses on. */
+export function IconPhone(props: IconProps) {
+  return (
+    <Glyph {...props}>
+      <rect x="6.5" y="2.5" width="11" height="19" rx="3" />
+      <path d="M10 5.5h4" />
+      <path d="M11 18.2h2" />
+    </Glyph>
+  );
+}
+
+/** A small ledger/receipt: the disclosure card in Transparency. */
+export function IconReceipt(props: IconProps) {
+  return (
+    <Glyph {...props}>
+      <path d="M5 3.5h14v17l-2.3-1.6-2.35 1.6L12 18.9l-2.35 1.6L7.3 18.9 5 20.5v-17Z" />
+      <path d="M8.5 8h7" />
+      <path d="M8.5 11.5h7" />
+      <path d="M8.5 15h4" />
+    </Glyph>
+  );
+}
+
 export function IconSpark(props: IconProps) {
   return (
     <Glyph {...props}>

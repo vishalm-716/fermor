@@ -3,6 +3,7 @@
 import { useId, useState, type FormEvent } from "react";
 import { ArrowRight, Check, IconSpark } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
+import { Magnetic } from "@/components/depth";
 import { Reveal } from "@/components/ui/reveal";
 
 const POINTS = [
@@ -65,7 +66,7 @@ export function WaitlistCta() {
             <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
               <div className="lg:col-span-6">
                 <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-jade-300">
-                  06 — Early access
+                  09 — Early access
                 </p>
                 <h2 className="mt-4 font-display text-[2.1rem] leading-[1.08] tracking-[-0.015em] text-white sm:text-[2.8rem]">
                   Start with clarity.
@@ -166,18 +167,20 @@ export function WaitlistCta() {
                           onChange={(event) => setCompany(event.target.value)}
                           className="pointer-events-none absolute -left-[9999px] size-0 opacity-0"
                         />
-                        <Button
-                          type="submit"
-                          variant="onDark"
-                          size="lg"
-                          className="shrink-0"
-                          disabled={status === "sending"}
-                        >
-                          {status === "sending" ? "Adding you…" : "Join the list"}
-                          {status === "sending" ? null : (
-                            <ArrowRight className="size-4 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
-                          )}
-                        </Button>
+                        <Magnetic className="shrink-0">
+                          <Button
+                            type="submit"
+                            variant="onDark"
+                            size="lg"
+                            className="w-full sm:w-auto"
+                            disabled={status === "sending"}
+                          >
+                            {status === "sending" ? "Adding you…" : "Join the list"}
+                            {status === "sending" ? null : (
+                              <ArrowRight className="size-4 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
+                            )}
+                          </Button>
+                        </Magnetic>
                       </div>
 
                       <p className="mt-4 flex items-start gap-2 text-[0.72rem] leading-relaxed text-white/45">
